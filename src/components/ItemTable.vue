@@ -18,7 +18,16 @@
           <td>{{ currentBookList.title }}</td>
           <td>{{ currentBookList.isbn }}</td>
           <td>
-            <button class="table-item__table-btn-remove">- entfernen</button>
+            <button
+              :class="{
+                'table-item__table-btn-remove': currentBookList.isBookmarked,
+                'table-item__table-btn-add': !currentBookList.isBookmarked,
+              }"
+              @click="bookmarkChanged(currentBookList)"
+            >
+              <span v-if="currentBookList.isBookmarked"> - entfernen </span>
+              <span v-else> + hinzufügen</span>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -37,6 +46,11 @@ export default {
     currentBooksList: {
       type: Array,
       default: () => [],
+    },
+  },
+  methods: {
+    bookmarkChanged(currentBookList) {
+      this.$emit("bookmark-changed", currentBookList.id);
     },
   },
 };
